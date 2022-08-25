@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class Home extends Component {
     constructor(props) {
@@ -22,7 +23,7 @@ class Home extends Component {
                     <button>Log In</button>
                 </div>
                 <div>
-                    <p>Don't have an account? <span>Sign up</span></p>
+                    <p>Don't have an account? <Link to={"/signup"}><span>Sign up</span></Link></p>
                 </div>
             </div>
         );
