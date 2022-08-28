@@ -46,15 +46,15 @@ class Home extends Component {
 
     render() {
         return (
-            <div>
+            <div className="background">
                 <div className="container">
-                    <h1>Title</h1>
+                    <h1 className="cursive">Title</h1>
                     <input placeholder="Username" name="userName" onChange={this.eventHandler.bind(this)}/>
                     <input placeholder="Password" name="password" onChange={this.eventHandler.bind(this)} type="password"/>
                     <button disabled={this.state.disabled} onClick={this.login.bind(this)}>Log In</button>
                 </div>
-                <div>
-                    <p>Don't have an account? <Link to={"/signup"}><span>Sign up</span></Link></p>
+                <div className="small-container">
+                    <p>Don't have an account? <Link to={"/signup"}><span className="blue-link">Sign up</span></Link></p>
                 </div>
             </div>
         );
