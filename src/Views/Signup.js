@@ -57,17 +57,17 @@ class Signup extends Component {
 
     render() {
         return (
-            <div>
-                <div>
+            <div className="background">
+                <div className="container">
                     <h1>Title</h1>
-                    <h2>Sub Title</h2>
+                    <h3>Sign up to see posts from your friends</h3>
                     <input placeholder="Full Name" name="fullName" onChange={this.eventHandler.bind(this)} />
                     <input placeholder="Username" name="userName" onChange={this.eventHandler.bind(this)} />
                     <input placeholder="Password" name="password" onChange={this.eventHandler.bind(this)} type="password"/>
                     <input placeholder="Confirm Password" name="confirmPassword" onChange={this.eventHandler.bind(this)} type="password"/>
                     <button onClick={this.createUser.bind(this)} disabled={this.state.disabled}>Sign up</button>
                 </div>
-                <div>
+                <div className="small-container">
                     <p>Have an account? <Link to={"/"}><span>Log in</span></Link></p>
                 </div>
             </div>
