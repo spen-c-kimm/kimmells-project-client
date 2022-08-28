@@ -1,14 +1,16 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { showFailureAlert, showLoadingAlert, showPostAlert } from "../utilities";
-import { withRouter } from "../withRouter";
+import { withRouter } from "../withHooks";
 import Post from "./Post";
+import Footer from "./Footer";
 
 class Feed extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            posts: []
+            posts: [],
+            users: []
         };
     }
 
@@ -17,16 +19,17 @@ class Feed extends Component {
 
         if (!res.authenticated) {
             this.props.navigate('/');
-        }
-
-        const srvData = res?.data;
-
-        if (!srvData || !srvData.success) {
-            await showFailureAlert(srvData?.message)
         } else {
-            this.setState({
-                posts: srvData.posts
-            });
+            const srvData = res?.data;
+
+            if (!srvData || !srvData.success) {
+                await showFailureAlert(srvData?.message)
+            } else {
+                this.setState({
+                    posts: srvData.posts,
+                    users: srvData.users,
+                });
+            }
         }
     }
 
@@ -37,14 +40,15 @@ class Feed extends Component {
                     <input placeholder="Search" />
                 </div>
                 <div>
-                    {this.state.posts.map(p => {
-                        return <Post obj={p}/>
-                    })}
+                    <button>Posts</button>
+                    <button>Users</button>
                 </div>
                 <div>
-                    <button onClick={showPostAlert}>Post</button>
-                    <Link to={"/profile"}><button>Profile</button></Link>
+                    {this.state.posts.map(p => {
+                        return <Post obj={{...p, useLinks: true}} />
+                    })}
                 </div>
+                <Footer />
             </div>
         );
     }
