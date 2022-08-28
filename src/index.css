@@ -11,3 +11,177 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.background {
+  background: whitesmoke;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  position: absolute;
+}
+
+.container {
+  margin: 15vh 0 0 40%;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  width: 20%;
+  height: 60vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.container input { 
+  height: 40px;
+  background: whitesmoke;
+  margin: 0 10% 1vh 10%;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  outline: none;
+}
+
+.container button { 
+  height: 40px;
+  background: #0095f6;
+  color: white;
+  margin: 0 10% 0 10%;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+}
+
+
+.small-container {
+  margin: 2.5vh 0 0 40%;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  width: 20%;
+  height: 7.5vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  justify-content: center;
+}
+
+.blue-link {
+  color: #0095f6;
+}
+
+.cursive {
+  font-style: 'Brush Script MT';
+  font-family: "Brush Script MT, cursive";
+}
+
+.page {
+  margin: 0 0 0 33.33%;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  width: 33.33%;
+  height: 99.5vh;
+  /* text-align: center; */
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.post-profile-picture {
+  height: 50px;
+  border-radius: 50px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.profile-picture {
+  height: 100px;
+  border-radius: 50px;
+  border: 2px solid white;
+  float: left;
+  margin-top: auto;
+}
+
+.banner {
+  background: lightgray;
+  height: 20vh;
+  display: flex;
+  /* flex-direction: column; */
+}
+
+.centered {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid lightgray;
+}
+
+.centered button {
+  height: 40px;
+  width: 20%;
+  margin: 0 5px 0 5px;
+  border: none;
+  border-radius: 3px;
+}
+
+.centered button:hover {
+  background: black;
+  color: white;
+  cursor: pointer;
+}
+
+.profile-top {
+  height: 35vh;
+}
+.posts-container {
+  height: 55vh;
+  overflow-y: scroll;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.post {
+  border-bottom: 1px solid lightgray;
+}
+
+.footer {
+  width: 90%;
+  margin-left: 5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.footer button {
+  height: 40px;
+  border: none;
+}
+
+.footer button:hover {
+  background: black;
+  color: white;
+  cursor: pointer;
+}
+
+.fifth {
+  width: 20%;
+  margin-top: auto;
+}
+
+.fifth button {
+  width: 100%;
+}
+
+.post-banner {
+  margin-top: 10px;
+}
+
+.post-text {
+  width: 80%;
+  margin-left: 10%;
+}
+
+.post-actions {
+  width: 80%;
+  margin-left: 10%;
+}
