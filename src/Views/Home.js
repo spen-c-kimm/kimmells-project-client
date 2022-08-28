@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { showFailureAlert, showLoadingAlert } from "../utilities";
-import { withRouter } from "../withRouter";
+import { withRouter } from "../withHooks";
 
 class Home extends Component {
     constructor(props) {
@@ -39,6 +39,7 @@ class Home extends Component {
                 await showFailureAlert(srvData.message);
             } else {
                 localStorage.setItem("token", srvData.token);
+                localStorage.setItem("userID", srvData.userID);
                 this.props.navigate('/feed');
             }
     };
@@ -46,7 +47,7 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <div>
+                <div className="container">
                     <h1>Title</h1>
                     <input placeholder="Username" name="userName" onChange={this.eventHandler.bind(this)}/>
                     <input placeholder="Password" name="password" onChange={this.eventHandler.bind(this)} type="password"/>
