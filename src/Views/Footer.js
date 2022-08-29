@@ -10,6 +10,11 @@ class Footer extends Component {
         };
     }
 
+    componentDidMount() {
+        if (this.props.selectedBtn === "feed") this.setState({ selectedBtn: "feed" });
+        if (this.props.selectedBtn === "profile" && this.props.userID === localStorage.getItem("userID")) this.setState({ selectedBtn: "profile" });
+    }
+
     logout() {
         localStorage.clear();
     }

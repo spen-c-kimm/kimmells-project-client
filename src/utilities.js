@@ -52,6 +52,24 @@ export async function showPostAlert() {
     });
 };
 
+export async function showBioAlert() {
+    return new Promise((resolve) => {
+        swal.fire({
+            title: "Add Bio",
+            input: 'textarea',
+            showCancelButton: true,
+            confirmButtonText: 'Post',
+            preConfirm: (bio) => {
+                const token = localStorage.getItem("token");
+                showLoadingAlert("updateBio", { token, bio }).then(res => {
+                    console.log("res: ", res);
+                });                
+            }
+        });
+        resolve();
+    });
+};
+
 export async function showReplyAlert(userName, repliedToID) {
     return new Promise((resolve) => {
         swal.fire({

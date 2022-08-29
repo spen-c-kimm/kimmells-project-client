@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { showLoadingAlert, showFailureAlert } from "../utilities";
 import { withRouter } from "../withHooks";
 import Post from "./Post";
 import Footer from "./Footer";
+import api from "../api";
 const image = require("../assets/default-profile-picture.PNG")
 
 class Profile extends Component {
@@ -16,14 +16,16 @@ class Profile extends Component {
                 userName: "",
                 fullName: "",
                 bio: "",
-                selectedBtn: ""
+                selectedBtn: "",
+                following: 0
             }
         };
     }
 
     async getPosts() {
         const userID = this.props.params?.userID;
-        const res = await showLoadingAlert("getUserPosts", { userID }, true);
+        const followerID = localStorage.getItem("userID");
+        const res = await showLoadingAlert("getUserPosts", { userID, followerID }, true);
         const srvData = res?.data;
 
         if (!srvData || !srvData.success) {
@@ -50,6 +52,16 @@ class Profile extends Component {
         }
     }
 
+    async followUser() {
+        let following = this.state.user.following;
+        following = following === 0 ? 1: 0;
+        this.setState({ user: {...this.state.user, following}})
+        const followerID = localStorage.getItem("userID");
+        const followingID = this.state.user.ID;
+
+        await api("followUser", { followerID, followingID }, true);
+    }
+
     async handleBtns(e) {
         const name = e.target.name;
 
@@ -71,9 +83,12 @@ class Profile extends Component {
                     <div className="profile-top">
                         <div>
                             <div className="banner"><img className="profile-picture" src={image} /></div>
-                            <div className="row">
+                            <div className="row" style={{ alignItems: "center" }}>
+                                <div className="row" style={{ width: "85%" }}>
                                 <strong><p>{this.state.user.fullName}</p></strong>
                                 <p>@{this.state.user.userName}</p>
+                                </div>
+                                <button style={{ width: "10%" }} className={`followBtn ${this.state.user.following === 1 ? "blackBtn" : ""}`} onClick={this.followUser.bind(this)}>Follow</button>
                             </div>
                             <p>{this.state.user.bio}</p>
                         </div>
