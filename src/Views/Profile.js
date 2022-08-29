@@ -57,7 +57,7 @@ class Profile extends Component {
                             return <Post obj={p} />
                         })}
                     </div>
-                    <Footer />
+                    <Footer selectedBtn="profile" userID={this.props.params?.userID}/>
                 </div>
             </div>
         );
