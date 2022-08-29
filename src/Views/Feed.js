@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { showFailureAlert, showLoadingAlert, showPostAlert } from "../utilities";
+import { showFailureAlert, showLoadingAlert } from "../utilities";
 import { withRouter } from "../withHooks";
 import Post from "./Post";
+import User from "./User";
 import Footer from "./Footer";
 
 class Feed extends Component {
@@ -10,12 +10,14 @@ class Feed extends Component {
         super(props);
         this.state = {
             posts: [],
-            users: []
+            users: [],
+            selectedBtn: "posts"
         };
     }
 
     async componentDidMount() {
-        const res = await showLoadingAlert("getFeed", {}, true);
+        const userID = localStorage.getItem("userID");
+        const res = await showLoadingAlert("getFeed", { userID }, true);
 
         if (!res.authenticated) {
             this.props.navigate('/');
@@ -31,24 +33,38 @@ class Feed extends Component {
                 });
             }
         }
-    }
+    };
+
+    handleBtns(e) {
+        this.setState({
+            selectedBtn: e.target.name
+        });
+    };
 
     render() {
         return (
-            <div>
-                <div>
-                    <input placeholder="Search" />
-                </div>
-                <div>
-                    <button>Posts</button>
-                    <button>Users</button>
-                </div>
-                <div>
-                    {this.state.posts.map(p => {
-                        return <Post obj={{...p, useLinks: true}} />
+            <div className="background">
+                <div className="page">
+                    <div className="feed-top">
+                        <input className="search" placeholder="Search" />
+                        <div className="centered">
+                            <button name="posts" onClick={(e) => { this.handleBtns(e) }} className={`${this.state.selectedBtn === "posts" ? "blackBtn" : ""}`}>Posts</button>
+                            <button name="users" onClick={(e) => { this.handleBtns(e) }} className={`${this.state.selectedBtn === "users" ? "blackBtn" : ""}`}>Users</button>
+                        </div>
+                    </div>
+                    { this.state.selectedBtn === "posts" ? <div className="feed-container">
+                        {this.state.posts.map(p => {
+                            return <Post obj={{ ...p, useLinks: true }} />
+                        })}
+                    </div> :
+                    <div className="feed-container">
+                    {this.state.users.map(u => {
+                        return <User obj={u} />
                     })}
                 </div>
-                <Footer />
+                    }
+                    <Footer selectedBtn="feed"/>
+                </div>
             </div>
         );
     }
