@@ -6,7 +6,7 @@ class Footer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            selectedBtn: ""
         };
     }
 
@@ -17,8 +17,8 @@ class Footer extends Component {
     render() {
         return (
             <div className="footer">
-                <Link className="fifth" to={"/feed"}><button>Feed</button></Link>
-                <Link className="fifth" to={{ pathname: `/profile/${localStorage.getItem("userID")}` }}><button>Profile</button></Link>
+                <Link className="fifth" to={"/feed"}><button className={`${this.state.selectedBtn === "feed" ? "blackBtn" : ""}`}>Feed</button></Link>
+                <Link className="fifth" to={{ pathname: `/profile/${localStorage.getItem("userID")}` }}><button className={`${this.state.selectedBtn === "profile" ? "blackBtn" : ""}`} >Profile</button></Link>
                 <button className="fifth" onClick={showPostAlert}>Post</button>
                 <Link className="fifth" to={"/"}><button onClick={this.logout}>Log out</button></Link>
             </div>
