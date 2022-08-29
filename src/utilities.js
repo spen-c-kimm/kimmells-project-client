@@ -34,10 +34,28 @@ export async function showFailureAlert(message, title = "Error!", timer = 1500) 
     });
 };
 
-export async function showPostAlert(userID, repliedToID = 0) {
+export async function showPostAlert() {
     return new Promise((resolve) => {
         swal.fire({
             title: "What's happening?",
+            input: 'textarea',
+            showCancelButton: true,
+            confirmButtonText: 'Post',
+            preConfirm: (text) => {
+                const token = localStorage.getItem("token");
+                showLoadingAlert("createPost", { token, text, repliedToID: 0 }).then(res => {
+                    console.log("res: ", res);
+                });                
+            }
+        });
+        resolve();
+    });
+};
+
+export async function showReplyAlert(userName, repliedToID) {
+    return new Promise((resolve) => {
+        swal.fire({
+            title: `Replying to @${userName}`,
             input: 'textarea',
             showCancelButton: true,
             confirmButtonText: 'Post',
