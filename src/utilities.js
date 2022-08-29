@@ -34,7 +34,7 @@ export async function showFailureAlert(message, title = "Error!", timer = 1500) 
     });
 };
 
-export async function showPostAlert() {
+export async function showPostAlert(callBack) {
     return new Promise((resolve) => {
         swal.fire({
             title: "What's happening?",
@@ -43,9 +43,9 @@ export async function showPostAlert() {
             confirmButtonText: 'Post',
             preConfirm: (text) => {
                 const token = localStorage.getItem("token");
-                showLoadingAlert("createPost", { token, text, repliedToID: 0 }).then(res => {
-                    console.log("res: ", res);
-                });                
+                api("createPost", { token, text, repliedToID: 0 }).then(function() {
+                    callBack();
+                });
             }
         });
         resolve();
@@ -62,11 +62,10 @@ export async function showBioAlert() {
             preConfirm: (bio) => {
                 const token = localStorage.getItem("token");
                 showLoadingAlert("updateBio", { token, bio }).then(res => {
-                    console.log("res: ", res);
+                    resolve(bio);
                 });                
             }
         });
-        resolve();
     });
 };
 
