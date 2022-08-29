@@ -15,6 +15,11 @@ class Footer extends Component {
         if (this.props.selectedBtn === "profile" && this.props.userID === localStorage.getItem("userID")) this.setState({ selectedBtn: "profile" });
     }
 
+    async handlePost() {
+        showPostAlert(this.props.initPage);
+        // await this.props.initPage();
+    }
+
     logout() {
         localStorage.clear();
     }
@@ -24,7 +29,7 @@ class Footer extends Component {
             <div className="footer">
                 <Link className="fifth" to={"/feed"}><button className={`${this.state.selectedBtn === "feed" ? "blackBtn" : ""}`}>Feed</button></Link>
                 <Link className="fifth" to={{ pathname: `/profile/${localStorage.getItem("userID")}` }}><button className={`${this.state.selectedBtn === "profile" ? "blackBtn" : ""}`} >Profile</button></Link>
-                <button className="fifth" onClick={showPostAlert}>Post</button>
+                <button className="fifth" onClick={this.handlePost.bind(this)}>Post</button>
                 <Link className="fifth" to={"/"}><button onClick={this.logout}>Log out</button></Link>
             </div>
         );
