@@ -150,6 +150,11 @@ code {
   border-bottom: 1px solid lightgray;
 }
 
+.post:hover {
+  background: whitesmoke;
+}
+
+
 .footer {
   width: 90%;
   margin-left: 5%;
@@ -161,6 +166,7 @@ code {
 .footer button {
   height: 40px;
   border: none;
+  border-radius: 3px;
 }
 
 .footer button:hover {
@@ -224,6 +230,19 @@ a, a:visited, a:hover, a:active {
 }
 
 .blackBtn {
+  background: black;
+  color: white;
+}
+
+.followBtn {
+  width: 10%;
+  border-radius: 3px;
+  height: 30px;
+  border: none;
+}
+
+.followBtn:hover {
+  cursor: pointer;
   background: black;
   color: white;
 }
