@@ -15,7 +15,7 @@ class Feed extends Component {
         };
     }
 
-    async componentDidMount() {
+    async initPage() {
         const userID = localStorage.getItem("userID");
         const res = await showLoadingAlert("getFeed", { userID }, true);
 
@@ -33,6 +33,10 @@ class Feed extends Component {
                 });
             }
         }
+    }
+
+    async componentDidMount() {
+        this.initPage();
     };
 
     handleBtns(e) {
@@ -52,18 +56,18 @@ class Feed extends Component {
                             <button name="users" onClick={(e) => { this.handleBtns(e) }} className={`${this.state.selectedBtn === "users" ? "blackBtn" : ""}`}>Users</button>
                         </div>
                     </div>
-                    { this.state.selectedBtn === "posts" ? <div className="feed-container">
+                    {this.state.selectedBtn === "posts" ? <div className="feed-container">
                         {this.state.posts.map(p => {
                             return <Post obj={{ ...p, useLinks: true }} />
                         })}
                     </div> :
-                    <div className="feed-container">
-                    {this.state.users.map(u => {
-                        return <User obj={u} />
-                    })}
-                </div>
+                        <div className="feed-container">
+                            {this.state.users.map(u => {
+                                return <User obj={u} />
+                            })}
+                        </div>
                     }
-                    <Footer selectedBtn="feed"/>
+                    <Footer selectedBtn="feed" initPage={this.initPage.bind(this)}/>
                 </div>
             </div>
         );
