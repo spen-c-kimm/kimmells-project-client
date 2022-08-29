@@ -50,6 +50,12 @@ code {
   border-radius: 3px;
 }
 
+.container button:hover { 
+  background: #004675;
+  color: white;
+  cursor: pointer;
+}
+
 
 .small-container {
   margin: 2.5vh 0 0 40%;
@@ -184,4 +190,40 @@ code {
 .post-actions {
   width: 80%;
   margin-left: 10%;
+}
+
+.likeBtn {
+  height: 20px;
+  width: 20px;
+}
+
+.likeBtn:hover {
+  cursor: pointer;
+}
+
+.search {
+  width: 80%;
+  margin: 1vh 0 5vh 10%;
+  height: 40px;
+  background: whitesmoke;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  outline: none;
+}
+
+.feed-top {
+  height: 20vh;
+}
+
+.feed-container {
+  height: 70vh;
+}
+
+a, a:visited, a:hover, a:active {
+  color: inherit;
+}
+
+.blackBtn {
+  background: black;
+  color: white;
 }
