@@ -48,7 +48,7 @@ class Home extends Component {
         return (
             <div className="background">
                 <div className="container">
-                    <h1 className="cursive">Title</h1>
+                    <h1 className="cursive">Login</h1>
                     <input placeholder="Username" name="userName" onChange={this.eventHandler.bind(this)}/>
                     <input placeholder="Password" name="password" onChange={this.eventHandler.bind(this)} type="password"/>
                     <button disabled={this.state.disabled} onClick={this.login.bind(this)}>Log In</button>
