@@ -59,8 +59,8 @@ class Signup extends Component {
         return (
             <div className="background">
                 <div className="container">
-                    <h1>Title</h1>
-                    <h3>Sign up to see posts from your friends</h3>
+                    <h1>Sign Up</h1>
+                    <h4 className="subTitle">Sign up to see posts from your friends</h4>
                     <input placeholder="Full Name" name="fullName" onChange={this.eventHandler.bind(this)} />
                     <input placeholder="Username" name="userName" onChange={this.eventHandler.bind(this)} />
                     <input placeholder="Password" name="password" onChange={this.eventHandler.bind(this)} type="password"/>
