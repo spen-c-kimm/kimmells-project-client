@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { showLoadingAlert, showFailureAlert, showBioAlert } from "../utilities";
+import { showLoadingAlert, showFailureAlert, showBioAlert, showDeleteProfileAlert, showSuccessAlert } from "../utilities";
 import { withRouter } from "../withHooks";
 import Post from "./Post";
 import User from "./User";
@@ -31,8 +31,8 @@ class Profile extends Component {
         this.setState({ user: { ...this.state.user, bio } });
     }
 
-    async getPosts() {
-        const userID = this.props.params?.userID;
+    async getPosts(uID = null) {
+        const userID = uID || this.props.params?.userID;
         const followerID = localStorage.getItem("userID");
         const res = await showLoadingAlert("getUserPosts", { userID, followerID }, true);
         const srvData = res?.data;
@@ -131,7 +131,7 @@ class Profile extends Component {
         if (this.state.selectedBtn === "posts") {
             return <div className="posts-container">
                 {this.state.posts.map(p => {
-                    return <Post obj={p} initPage={this.getPosts.bind(this)}/>
+                    return <Post obj={p} initPage={this.getPosts.bind(this)} />
                 })}
             </div>
         }
@@ -139,7 +139,7 @@ class Profile extends Component {
         if (this.state.selectedBtn === "likes") {
             return <div className="posts-container">
                 {this.state.likes.map(p => {
-                    return <Post obj={p} />
+                    return <Post obj={p} initPage={this.getPosts.bind(this)}/>
                 })}
             </div>
         }
@@ -147,7 +147,7 @@ class Profile extends Component {
         if (this.state.selectedBtn === "followers") {
             return <div className="posts-container">
                 {this.state.followers.map(f => {
-                    return <User obj={f} />
+                    return <User obj={f} initPage={() => {this.getPosts(f.ID)}}/>
                 })}
             </div>
         }
@@ -155,9 +155,21 @@ class Profile extends Component {
         if (this.state.selectedBtn === "following") {
             return <div className="posts-container">
                 {this.state.following.map(f => {
-                    return <User obj={f} />
+                    return <User obj={f} getPosts={() => {this.getPosts(f.ID)}}/>
                 })}
             </div>
+        }
+    }
+
+    async handleDeleteProfile() {
+        const res = await showDeleteProfileAlert()
+        const srvData = res?.data;
+
+        if (srvData?.success) {
+            showSuccessAlert("Profile deleted successfully.");
+            this.props.navigate("/");
+        } else {
+            showFailureAlert(srvData?.message);
         }
     }
 
@@ -174,7 +186,7 @@ class Profile extends Component {
                                         <strong><p>{this.state.user.fullName}</p></strong>
                                         {this.state.user.userName ? <p>@{this.state.user.userName}</p> : <p></p>}
                                     </div>
-                                    {this.props.params?.userID === localStorage.getItem("userID") ? <button onClick={this.handleBio.bind(this)} className="followBtn">Update Bio</button> : <button className={`followBtn ${this.state.user.following === 1 ? "blackBtn" : ""}`} onClick={this.followUser.bind(this)}>{`${this.state.user.following === 1 ? "Following" : "Follow"}`}</button>}
+                                    {this.props.params?.userID === localStorage.getItem("userID") ? <div className="row"><button onClick={this.handleBio.bind(this)} className="followBtn">Update Bio</button><button className="followBtn" onClick={this.handleDeleteProfile.bind(this)}>Delete Account</button></div> : <button className={`followBtn ${this.state.user.following === 1 ? "blackBtn" : ""}`} onClick={this.followUser.bind(this)}>{`${this.state.user.following === 1 ? "Following" : "Follow"}`}</button>}
                                 </div>
                                 <div className="row">
                                     <p>Followers: {this.state.followersCount} Following: {this.state.followersCount}</p>
