@@ -17,7 +17,6 @@ class Footer extends Component {
 
     async handlePost() {
         showPostAlert(this.props.initPage);
-        // await this.props.initPage();
     }
 
     logout() {
@@ -27,10 +26,10 @@ class Footer extends Component {
     render() {
         return (
             <div className="footer">
-                <Link className="fifth" to={"/feed"}><button className={`${this.state.selectedBtn === "feed" ? "blackBtn" : ""}`}>Feed</button></Link>
-                <Link className="fifth" to={{ pathname: `/profile/${localStorage.getItem("userID")}` }}><button className={`${this.state.selectedBtn === "profile" ? "blackBtn" : ""}`} >Profile</button></Link>
-                <button className="fifth" onClick={this.handlePost.bind(this)}>Post</button>
-                <Link className="fifth" to={"/"}><button onClick={this.logout}>Log out</button></Link>
+                <Link className="fifth footerBtn" to={"/feed"}><button className={`footerBtn ${this.state.selectedBtn === "feed" ? "blackBtn" : ""}`}>Feed</button></Link>
+                <Link className="fifth" to={{ pathname: `/profile/${localStorage.getItem("userID")}` }}><button className={`footerBtn ${this.state.selectedBtn === "profile" ? "blackBtn" : ""}`} onClick={this.props.initPage}>Profile</button></Link>
+                <button className="fifth footerBtn" onClick={this.handlePost.bind(this)}>Post</button>
+                <Link className="fifth" to={"/"}><button className="footerBtn" onClick={this.logout}>Log out</button></Link>
             </div>
         );
     }
