@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import api from "../api";
-import { showReplyAlert, formatDate } from "../utilities";
+import { showReplyAlert, formatDate, showDeletePostAlert, showSuccessAlert, showFailureAlert } from "../utilities";
 const profile = require("../assets/default-profile-picture.PNG");
 const like = require("../assets/like-icon.png");
 const liked = require("../assets/liked-icon.png");
 const reply = require("../assets/reply-icon.png");
 const replies = require("../assets/replies-icon.png");
+const trash = require("../assets/trash-icon.png");
 
 class Post extends Component {
     constructor(props) {
@@ -19,6 +20,18 @@ class Post extends Component {
     async handleReplyBTn() {
         await showReplyAlert(this.props.obj.userName, this.props.obj.postID, this.props.initPage);
     }
+
+    async handleDeletePost() {
+        const res = await showDeletePostAlert(this.props.obj.postID);
+        const srvData = res?.data;
+
+        if (srvData.success) {
+            showSuccessAlert("Post deleted successfully.");
+            this.props.initPage();
+        } else {
+            showFailureAlert(srvData.message);
+        }
+    };
 
     async likePost() {
         const liked = this.state.liked;
@@ -54,6 +67,7 @@ class Post extends Component {
                         <Link onClick={this.handleRepliesCallback.bind(this)} to={{ pathname: `/replies/${this.props.obj.postID}` }}><img src={replies} className="likeBtn" /></Link>
                         <img src={reply} className="likeBtn" onClick={this.handleReplyBTn.bind(this)} />
                         <img src={this.state.liked ? liked : like} className="likeBtn" onClick={this.likePost.bind(this)} />
+                        {localStorage.getItem("userID") === String(this.props.obj.userID) ? <img src={trash} className="likeBtn" onClick={this.handleDeletePost.bind(this)} /> : <div className="likeBtn"/>}
                     </div>
                     <p>{formatDate(this.props.obj.dateCreated)}</p>
                 </div>
