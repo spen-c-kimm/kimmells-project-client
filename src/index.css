@@ -277,6 +277,7 @@ a, a:visited, a:hover, a:active {
   border-radius: 3px;
   height: 30px;
   border: none;
+  margin-left: 10px;
 }
 
 .followBtn:hover {
@@ -311,4 +312,10 @@ a, a:visited, a:hover, a:active {
 
 .replies-banner div {
   margin-bottom: 10px;
+}
+
+.noReplies {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
 }
