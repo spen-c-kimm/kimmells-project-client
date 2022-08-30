@@ -44,7 +44,7 @@ export async function showPostAlert(callBack) {
             confirmButtonText: 'Post',
             preConfirm: (text) => {
                 const token = localStorage.getItem("token");
-                api("createPost", { token, text, repliedToID: 0 }).then(function() {
+                api("createPost", { token, text, repliedToID: 0 }, true).then(function () {
                     callBack();
                 });
             }
@@ -62,9 +62,9 @@ export async function showBioAlert() {
             confirmButtonText: 'Post',
             preConfirm: (bio) => {
                 const token = localStorage.getItem("token");
-                showLoadingAlert("updateBio", { token, bio }).then(res => {
+                showLoadingAlert("updateBio", { token, bio }, true, "put").then(res => {
                     resolve(bio);
-                });                
+                });
             }
         });
     });
@@ -79,19 +79,18 @@ export async function showReplyAlert(userName, repliedToID, callBack = null) {
             confirmButtonText: 'Post',
             preConfirm: (text) => {
                 const token = localStorage.getItem("token");
-                showLoadingAlert("createPost", { token, text, repliedToID }).then(res => {
+                showLoadingAlert("createPost", { token, text, repliedToID }, true).then(res => {
                     if (callBack) {
-                        console.log("CALLBACK")
                         callBack();
                     }
-                });                
+                });
             }
         });
         resolve();
     });
 };
 
-export async function showLoadingAlert(action, params, requiresAuth = false) {
+export async function showLoadingAlert(action, params, requiresAuth = false, method = "post") {
     return new Promise((resolve) => {
         try {
             swal.fire({
@@ -102,7 +101,7 @@ export async function showLoadingAlert(action, params, requiresAuth = false) {
                     let time = new Date().getTime();
                     swal.showLoading();
 
-                    const res = await api(action, params, requiresAuth)
+                    const res = await api(action, params, requiresAuth, method)
 
                     time = new Date().getTime() - time;
 
@@ -122,39 +121,105 @@ export async function showLoadingAlert(action, params, requiresAuth = false) {
 
 export const formatDate = (entryDate, mask) => {
     if (!entryDate) {
-      return null;
+        return null;
     }
-  
+
     const msk = (mask === undefined) ? 'MM/DD/YYYY hh:mm A' : mask;
     const d = getValidDate(entryDate);
     //const d = new Date(entryDate).toUTCString();
-  
+
     if (d === null) {
-      return null;
+        return null;
     }
     const m = moment(d);
-  
+
     return m.format(msk);
-  }
-  
-  export const getValidDate = (entryDate) => {
+}
+
+export const getValidDate = (entryDate) => {
     // let date = (entryDate) || new Date().toISOString();
     let date = (new Date(entryDate)).getTime() - (5000 * 60 * 60)
     date = new Date(date).toISOString();
-  
+
     if (typeof entryDate === 'object') {
-      date = new Date(Date.parse(date)).toString();
-    } else {
-      if (date.indexOf('GMT') > 0) {
         date = new Date(Date.parse(date)).toString();
-      }
-      if (date.indexOf(':') > 0) {
-        date = new Date(date).toString();
-      } else {
-        date = new Date(date + ' 12:00:00:0.00Z').toString();
-      }
+    } else {
+        if (date.indexOf('GMT') > 0) {
+            date = new Date(Date.parse(date)).toString();
+        }
+        if (date.indexOf(':') > 0) {
+            date = new Date(date).toString();
+        } else {
+            date = new Date(date + ' 12:00:00:0.00Z').toString();
+        }
     }
     const resDate = new Date(date);
-  
+
     return resDate; //new Date(Date.parse(resDate));
-  }
+}
+
+export async function showDeletePostAlert(postID) {
+    return new Promise((resolve) => {
+        try {
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const res = showLoadingAlert("deletePost", { userID: localStorage.getItem("userID"), postID }, true, "post");
+                    resolve(res || {
+                        data: {
+                            success: false,
+                            message: "Could not delete your post. Please try again later."
+                        }
+                    });
+                }
+            });
+        } catch (error) {
+            resolve({
+                data: {
+                    success: false,
+                    message: "Could not delete your post. Please try again later."
+                }
+            });
+        }
+    });
+}
+
+export async function showDeleteProfileAlert() {
+    return new Promise((resolve) => {
+        try {
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const res = showLoadingAlert("deleteProfile", { userID: localStorage.getItem("userID") }, true, "post");
+                    resolve(res || {
+                        data: {
+                            success: false,
+                            message: "Could not delete your profile. Please try again later."
+                        }
+                    });
+                }
+            });
+        } catch (error) {
+            resolve({
+                data: {
+                    success: false,
+                    message: "Could not delete your profile. Please try again later."
+                }
+            });
+        }
+    });
+}
