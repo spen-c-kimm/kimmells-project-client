@@ -14,20 +14,21 @@ class Profile extends Component {
             posts: [],
             likes: [],
             followers: [],
-            follwing: [],
+            following: [],
             selectedBtn: "posts",
+            followersCount: 0,
+            followingCount: 0,
             user: {
                 userName: "",
                 fullName: "",
                 bio: "",
-                following: 0
             }
         };
     }
 
     async handleBio() {
         const bio = await showBioAlert();
-        this.setState({ user: {...this.state.user, bio} });
+        this.setState({ user: { ...this.state.user, bio } });
     }
 
     async getPosts() {
@@ -42,6 +43,8 @@ class Profile extends Component {
             this.setState({
                 posts: srvData.posts,
                 user: srvData.user,
+                followersCount: srvData.followersCount,
+                followingCount: srvData.followingCount,
                 selectedBtn: "posts"
             });
         }
@@ -63,7 +66,8 @@ class Profile extends Component {
 
     async getFollowers() {
         const userID = this.props.params?.userID;
-        const res = await showLoadingAlert("getFollowers", { userID }, true);
+        const currentUser = localStorage.getItem("userID");
+        const res = await showLoadingAlert("getFollowers", { userID, currentUser }, true);
         const srvData = res?.data;
 
         if (!srvData || !srvData.success) {
@@ -77,7 +81,8 @@ class Profile extends Component {
 
     async getFollowing() {
         const userID = this.props.params?.userID;
-        const res = await showLoadingAlert("getFollowing", { userID }, true);
+        const currentUser = localStorage.getItem("userID");
+        const res = await showLoadingAlert("getFollowing", { userID, currentUser }, true);
         const srvData = res?.data;
 
         if (!srvData || !srvData.success) {
@@ -90,9 +95,17 @@ class Profile extends Component {
     }
 
     async followUser() {
-        let following = this.state.user.following;
-        following = following === 0 ? 1 : 0;
-        this.setState({ user: { ...this.state.user, following } })
+        let isFollowing = this.state.user.following;
+        let followersCount = this.state.followersCountCount;
+        if (isFollowing === 0) {
+            followersCount++;
+            isFollowing = 1;
+        } else {
+            followersCount--;
+            isFollowing = 0;
+        }
+
+        this.setState({ user: { ...this.state.user, following: isFollowing }, followersCount })
         const followerID = localStorage.getItem("userID");
         const followingID = this.state.user.ID;
 
@@ -111,14 +124,14 @@ class Profile extends Component {
     }
 
     async componentDidMount() {
-        await this.getPosts();        
+        await this.getPosts();
     }
 
     displayContent() {
         if (this.state.selectedBtn === "posts") {
             return <div className="posts-container">
                 {this.state.posts.map(p => {
-                    return <Post obj={p} />
+                    return <Post obj={p} initPage={this.getPosts.bind(this)}/>
                 })}
             </div>
         }
@@ -155,14 +168,19 @@ class Profile extends Component {
                     <div className="profile-top">
                         <div>
                             <div className="banner"><img className="profile-picture" src={image} /></div>
-                            <div className="row" style={{ alignItems: "center" }}>
-                                <div className="row" style={{ width: "85%" }}>
-                                    <strong><p>{this.state.user.fullName}</p></strong>
-                                    <p>@{this.state.user.userName}</p>
+                            <div className="padded">
+                                <div className="row" style={{ alignItems: "center", justifyContent: "space-between" }}>
+                                    <div className="row">
+                                        <strong><p>{this.state.user.fullName}</p></strong>
+                                        {this.state.user.userName ? <p>@{this.state.user.userName}</p> : <p></p>}
+                                    </div>
+                                    {this.props.params?.userID === localStorage.getItem("userID") ? <button onClick={this.handleBio.bind(this)} className="followBtn">Update Bio</button> : <button className={`followBtn ${this.state.user.following === 1 ? "blackBtn" : ""}`} onClick={this.followUser.bind(this)}>{`${this.state.user.following === 1 ? "Following" : "Follow"}`}</button>}
                                 </div>
-                                {this.props.params?.userID === localStorage.getItem("userID") ? <button onClick={this.handleBio.bind(this)}>Update Bio</button> : <button style={{ width: "10%" }} className={`followBtn ${this.state.user.following === 1 ? "blackBtn" : ""}`} onClick={this.followUser.bind(this)}>Follow</button>}
+                                <div className="row">
+                                    <p>Followers: {this.state.followersCount} Following: {this.state.followersCount}</p>
+                                </div>
+                                <p>{this.state.user.bio}</p>
                             </div>
-                            <p>{this.state.user.bio}</p>
                         </div>
                         <div className="centered">
                             <button name="posts" onClick={(e) => { this.handleBtns(e) }} className={`${this.state.selectedBtn === "posts" ? "blackBtn" : ""}`}>Posts</button>
@@ -172,8 +190,8 @@ class Profile extends Component {
                         </div>
                     </div>
                     {this.displayContent()}
-                    <Footer selectedBtn="profile" userID={this.props.params?.userID} initPage={this.getPosts.bind(this)}/>
                 </div>
+                <Footer selectedBtn="profile" userID={this.props.params?.userID} initPage={this.getPosts.bind(this)} />
             </div>
         );
     }
