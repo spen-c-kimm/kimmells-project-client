@@ -73,9 +73,9 @@ class Replies extends Component {
                         </div>
                     </div>
                     <div className="posts-container">
-                        {this.state.replies.map(r => {
+                        {this.state.replies?.length > 0 ? this.state.replies.map(r => {
                             return <Post obj={r} initPage={() => { this.initPage(r.postID) }} location={ this.props.location }/>
-                        })}
+                        }) : <h2 className="noReplies">No Replies</h2>}
                     </div>
                     <Footer selectedBtn="profile" userID={this.props.params?.userID} />
                 </div>
