@@ -96,7 +96,7 @@ class Profile extends Component {
 
     async followUser() {
         let isFollowing = this.state.user.following;
-        let followersCount = this.state.followersCountCount;
+        let followersCount = Number(this.state.followersCountCount);
         if (isFollowing === 0) {
             followersCount++;
             isFollowing = 1;
@@ -189,7 +189,7 @@ class Profile extends Component {
                                     {this.props.params?.userID === localStorage.getItem("userID") ? <div className="row"><button onClick={this.handleBio.bind(this)} className="followBtn">Update Bio</button><button className="followBtn" onClick={this.handleDeleteProfile.bind(this)}>Delete Account</button></div> : <button className={`followBtn ${this.state.user.following === 1 ? "blackBtn" : ""}`} onClick={this.followUser.bind(this)}>{`${this.state.user.following === 1 ? "Following" : "Follow"}`}</button>}
                                 </div>
                                 <div className="row">
-                                    <p>Followers: {this.state.followersCount} Following: {this.state.followersCount}</p>
+                                    <p>Followers: {this.state.followersCount} Following: {this.state.followingCount}</p>
                                 </div>
                                 <p>{this.state.user.bio}</p>
                             </div>

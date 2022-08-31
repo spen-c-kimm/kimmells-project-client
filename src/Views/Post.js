@@ -13,7 +13,7 @@ class Post extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            liked: props.obj.liked === 1
+            liked: (props.obj.liked === 1 || props.obj.liked === "1")
         };
     }
 
@@ -66,7 +66,7 @@ class Post extends Component {
                     <div className="post-actions">
                         <Link onClick={this.handleRepliesCallback.bind(this)} to={{ pathname: `/replies/${this.props.obj.postID}` }}><img src={replies} className="likeBtn" /></Link>
                         <img src={reply} className="likeBtn" onClick={this.handleReplyBTn.bind(this)} />
-                        <img src={this.state.liked ? liked : like} className="likeBtn" onClick={this.likePost.bind(this)} />
+                        <img src={this.props.obj.liked == 1 ? liked : like} className="likeBtn" onClick={this.likePost.bind(this)} />
                         {localStorage.getItem("userID") === String(this.props.obj.userID) ? <img src={trash} className="likeBtn" onClick={this.handleDeletePost.bind(this)} /> : <div className="likeBtn"/>}
                     </div>
                     <p>{formatDate(this.props.obj.dateCreated)}</p>
